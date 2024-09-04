@@ -1,9 +1,6 @@
 import { Wallet } from '@mintbase-js/wallet';
-import { execute, mint } from '@mintbase-js/sdk';
-import { mbjs } from '@mintbase-js/sdk';
+import { execute, mint, mbjs } from '@mintbase-js/sdk';
 import { proxyAddress, contractAddress, network, callbackUrl } from '../../config/setup';
-
-// Implement Mintbase integration here
 
 export async function createPredictionNFT(predictionText: string) {
   try {

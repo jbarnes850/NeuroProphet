@@ -1,6 +1,13 @@
-import { connect, keyStores, Near } from 'near-api-js';
+import { connect, keyStores, Near, ConnectConfig, Contract, WalletConnection } from 'near-api-js';
 
 let near: Near;
+let wallet: WalletConnection;
+let contract: Contract;
+
+const contractMethods = {
+  viewMethods: ['get_prediction', 'get_stakes'],
+  changeMethods: ['create_prediction', 'stake_on_prediction'],
+};
 
 export async function initializeNear() {
   const config = {
@@ -11,24 +18,63 @@ export async function initializeNear() {
     helperUrl: 'https://helper.testnet.near.org',
     explorerUrl: 'https://explorer.testnet.near.org',
   };
+  near = await connect(config as ConnectConfig);
+  wallet = new WalletConnection(near, 'ai-prediction-market');
 
-  near = await connect(config);
+  if (wallet.isSignedIn()) {
+    contract = new Contract(
+      wallet.account(),
+      process.env.NEXT_PUBLIC_NEAR_CONTRACT_ID!,
+      contractMethods
+    );
+  }
 }
 
 export async function signIn() {
-  const wallet = new (near.wallet as any)();
+  if (!wallet) {
+    throw new Error('NEAR has not been initialized');
+  }
   await wallet.requestSignIn({
-    contractId: process.env.NEAR_CONTRACT_ID,
-    methodNames: ['create_prediction', 'stake_on_prediction'],
+    contractId: process.env.NEXT_PUBLIC_NEAR_CONTRACT_ID,
+    methodNames: contractMethods.changeMethods,
   });
 }
 
 export async function signOut() {
-  const wallet = new (near.wallet as any)();
+  if (!wallet) {
+    throw new Error('NEAR has not been initialized');
+  }
   wallet.signOut();
 }
 
-export async function isSignedIn() {
-  const wallet = new (near.wallet as any)();
-  return wallet.isSignedIn();
+export function isSignedIn() {
+  return wallet?.isSignedIn() ?? false;
+}
+
+export async function createPrediction(id: string, description: string) {
+  if (!contract) {
+    throw new Error('Contract is not initialized');
+  }
+  return await contract.create_prediction({ id, description });
+}
+
+export async function stakeOnPrediction(predictionId: string, amount: number) {
+  if (!contract) {
+    throw new Error('Contract is not initialized');
+  }
+  return await contract.stake_on_prediction({ prediction_id: predictionId, amount });
+}
+
+export async function getPrediction(id: string) {
+  if (!contract) {
+    throw new Error('Contract is not initialized');
+  }
+  return await contract.get_prediction({ id });
+}
+
+export async function getStakes(predictionId: string) {
+  if (!contract) {
+    throw new Error('Contract is not initialized');
+  }
+  return await contract.get_stakes({ prediction_id: predictionId });
 }

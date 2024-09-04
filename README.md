@@ -1,6 +1,6 @@
 # NeuroProphet: AI-Powered Prediction Market for Crypto Trends
 
-This project demonstrates an AI-powered prediction market for crypto trends using the NEAR AI Stack. It leverages advanced AI capabilities, including Retrieval Augmented Generation (RAG) and specialized search APIs, to analyze crypto-related data and generate information-rich and timely cryptocurrency trends. The project is designed to be a fun and educational tool for understanding AI-powered prediction markets and the intersection of AI, blockchain, and web3.
+This project demonstrates an AI-powered prediction market for crypto trends using the NEAR AI Stack. It leverages advanced AI capabilities, including Retrieval Augmented Generation (RAG) and specialized search APIs, to analyze crypto-related data and generate information-rich and timely trends. The project is designed to be a fun and educational tool for understanding AI-powered prediction markets and the intersection of AI, blockchain, and web3.
 
 ![NeuroProphet](/public/NeuroProphet.png)
 

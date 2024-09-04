@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:contract": "near-sdk-js build src/contract/prediction_market.ts build/prediction_market.wasm",
+    "deploy:contract": "near deploy --accountId prediction-market.YOUR_ACCOUNT_ID.testnet --wasmFile build/prediction_market.wasm"
   },
   "dependencies": {
     "@mintbase-js/sdk": "^0.5.4-beta.0",
@@ -20,6 +22,7 @@
     "exa-js": "^1.0.0",
     "lucide-react": "^0.438.0",
     "near-api-js": "^2.1.4",
+    "near-sdk-js": "^2.0.0",
     "next": "14.2.7",
     "openai": "^4.57.1",
     "react": "^18",
